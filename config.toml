@@ -1,4 +1,4 @@
-baseurl = ""
+baseurl = "https://apirquet.netlify.com/"
 languageCode = "en-gb"
 title = "Anine's Blog"
 theme = "hpstr-hugo-theme"
