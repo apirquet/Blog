@@ -1,0 +1,49 @@
+---
+title: Barplots
+author: Anine
+date: '2017-11-03'
+slug: barplots
+categories: []
+tags: []
+---
+
+
+
+<p>BARPLOTS LET’S GO!!</p>
+<p>Can you guess our first step? Yep, bringing those fiesty little packages into our library:</p>
+<pre class="r"><code>library(Lahman)
+library(sqldf)
+library(ggplot2)</code></pre>
+<p>First of all, we want to figure out what figure out what data we want to extract. Let’s say we want to look at team homerun totals in 1980.</p>
+<pre class="r"><code>query&lt;-&quot;SELECT name,HR 
+FROM Teams 
+WHERE yearID=1980 
+ORDER BY HR &quot;
+result&lt;-sqldf(query)
+
+
+result$name&lt;-factor(result$name,levels=result$name)</code></pre>
+<p>So, because we want to order it by homeruns, we have to add an extra line of coding to make sure that this translates correctly into ggplot. See that last line?</p>
+<p><strong>result<span class="math inline">\(name&lt;-factor(result\)</span>name,levels=result$name)</strong></p>
+<p>This is used to save the information as a facter, and organize that data in a specific manner. Ggplot defaults to ordering information in alphabetical order, and this last line counteracts that default.</p>
+<p>Now that we have the data, we want to apply it to a barplot. In this case, we are using <em>geom_bar</em> to achieve a barplot. Let’s take a look:</p>
+<pre class="r"><code>ggplot()+
+  geom_bar(data=result,aes(x=name,y=HR),stat=&#39;identity&#39;)+
+  coord_flip()+
+  ggtitle(&quot;1980 Team Homerun Totals&quot;)+
+  xlab(&quot;Team Name&quot;)+
+  ylab(&quot;Homeruns&quot;)</code></pre>
+<p><img src="/post/2017-11-03-barplots_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>A few things to note here:</p>
+<ol style="list-style-type: decimal">
+<li><p>We need to add the line <strong>stat=‘identity’</strong> to have all the information go through correctly</p></li>
+<li><p>We used <strong>coord_flip</strong> to switch the x-axis and y-axis around. To make this more understandable, let’s take a look at the barplot if we had not added <strong>coord_flip</strong> to the code:</p></li>
+</ol>
+<pre class="r"><code>ggplot()+
+  geom_bar(data=result,aes(x=name,y=HR),stat=&#39;identity&#39;)+
+  ggtitle(&quot;1980 Team Homerun Totals&quot;)+
+  xlab(&quot;Team Name&quot;)+
+  ylab(&quot;Homeruns&quot;)</code></pre>
+<p><img src="/post/2017-11-03-barplots_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>See what I mean?</p>
+<p>Alrighty! That wraps things up for barplots! Until next time.</p>

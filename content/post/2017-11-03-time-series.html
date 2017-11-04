@@ -1,0 +1,45 @@
+---
+title: Time Series
+author: 'Anine'
+date: '2017-11-03'
+slug: time-series
+categories: []
+tags: []
+---
+
+
+
+<p>Hey guys! So last post we talked about Scatterplots. In this post we are going to talk about Time Series plots!</p>
+<p>Again, remember to bring in the necessary packages with library:</p>
+<pre class="r"><code>library(Lahman)
+library(sqldf)
+library(ggplot2)</code></pre>
+<p>Now that that’s done, lettuce jump into it!</p>
+<p>Say we want to see Babe Ruth’s homeruns over his twenty-two seasons. This is the query we want to put in: (remember, we want to save this in <strong>“result”</strong>)</p>
+<pre class="r"><code>query&lt;-&quot;SELECT yearID,HR FROM Batting WHERE playerID=&#39;ruthba01&#39;&quot;
+result&lt;-sqldf(query)</code></pre>
+<p>To put this information in a time series plot, we want to use the <em>geom_line</em> prompt. You can use <em>geom_point</em> as well, if you like. If not, you can either edit it out using <em>#</em> (to hide the prompt from being visualized), making the size of the points smaller (using the promt <em>size</em>), or just leaving it out of the query all together. Let me show you all three examples.</p>
+<p>Here it is with an altered size:</p>
+<pre class="r"><code>ggplot()+
+  geom_point(data=result,aes(x=yearID,y=HR),size=1)+
+  geom_line(data=result,aes(x=yearID,y=HR))+
+  ggtitle(&quot;Babe Ruth&#39;s Homeruns by Year&quot;)+
+  xlab(&quot;Year&quot;)+
+  ylab(&quot;Number of Homeruns&quot;)</code></pre>
+<p><img src="/post/2017-11-03-time-series_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>Using the <em>#</em> symbol to edit it out:</p>
+<pre class="r"><code>ggplot()+
+  #geom_point(data=result,aes(x=yearID,y=HR),size=1)+
+  geom_line(data=result,aes(x=yearID,y=HR))+
+  ggtitle(&quot;Babe Ruth&#39;s Homeruns by Year&quot;)+
+  xlab(&quot;Year&quot;)+
+  ylab(&quot;Number of Homeruns&quot;)</code></pre>
+<p><img src="/post/2017-11-03-time-series_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>Or just leaving it out all together:</p>
+<pre class="r"><code>ggplot()+
+  geom_line(data=result,aes(x=yearID,y=HR))+
+  ggtitle(&quot;Babe Ruth&#39;s Homeruns by Year&quot;)+
+  xlab(&quot;Year&quot;)+
+  ylab(&quot;Number of Homeruns&quot;)</code></pre>
+<p><img src="/post/2017-11-03-time-series_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>And there you have it! Next post, let’s go over Histograms. See yah then!</p>

@@ -1,0 +1,20 @@
+baseurl = ""
+languageCode = "en-gb"
+title = "Anine's Blog"
+theme = "hpstr-hugo-theme"
+pluralizelisttitles = false
+PygmentsCodeFences = true
+Paginate = 5
+disqusShortname = "hpstrhugo"
+
+[params]
+	subtitle = "Trying out some R stuff!"
+	[params.author]
+		name = "Anine P."
+		avatar = "/images/profile.jpg"
+		bio = "International student at MU"
+		github = "apirquet"
+	[params.image]
+	  feature = "/images/banner.jpg"
+	 # credit = "dargadgetz"
+	 # creditlink = "http://www.dargadgetz.com/ios-7-abstract-wallpaper-pack-for-iphone-5-and-ipod-touch-retina/"

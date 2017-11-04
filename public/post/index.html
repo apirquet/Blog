@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Post &#8211; Anine&#39;s Blog</title>
+<meta name="description" content="">
+
+    
+
+
+
+
+
+<meta name="twitter:title" content="Post">
+<meta name="twitter:description" content="Trying out some R stuff!">
+
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Post">
+<meta property="og:description" content="Trying out some R stuff!">
+<meta property="og:url" content="/post/">
+<meta property="og:site_name" content="Anine&#39;s Blog">
+
+
+
+  <meta property="og:updated_time" content="2017-11-03T00:00:00&#43;00:00"/>
+
+
+
+
+
+
+<link rel="canonical" href="/post/">
+
+  <link href="/post/index.xml" rel="alternate" type="application/rss+xml" title="Anine&#39;s Blog" />
+  <link href="/post/index.xml" rel="feed" type="application/rss+xml" title="Anine&#39;s Blog" />
+
+
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+
+<meta http-equiv="cleartype" content="on">
+
+<meta name="generator" content="Hugo 0.30.2" />
+
+<script src="/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+
+<link rel="shortcut icon" href="/favicon.png">
+
+
+</head>
+
+<body id="post-index" >
+<nav id="dl-menu" class="dl-menuwrapper" role="navigation" style="display:inline-block">
+	<button class="dl-trigger">Open Menu</button>
+	<ul class="dl-menu">
+		<li><a href="/">Home</a></li>
+		<li>
+			<a href="#">About</a>
+			<ul class="dl-submenu">
+			
+				<li>
+					
+					<img src="/images/profile.jpg" alt="Anine P.'s photo" class="author-photo">
+					
+					<h4>Anine P.</h4>
+					<p>International student at MU</p>
+				</li>
+				<li><a href="/about/"><span class="btn btn-inverse">Learn More</span></a></li>
+				
+				
+				
+				
+				
+				<li>
+					<a href="https://github.com/apirquet"><i class="fa fa-fw fa-github"></i> GitHub</a>
+				</li>
+				
+				
+				
+				
+			
+			</ul>
+		</li>
+		<li>
+			<a href="#">Posts</a>
+			<ul class="dl-submenu">
+				<li><a href="/posts/">All Posts</a></li>
+				<li><a href="/tags/">All Tags</a></li>
+			</ul>
+		</li>
+		
+	    <li><a href="/theme-setup/" >Theme Setup</a></li>
+	  
+	    <li><a href="http://mademistakes.com" target="_blank">External Link</a></li>
+	  
+	</ul>
+</nav>
+
+<div class="entry-header">
+  
+  <div class="header-title">
+    <div class="header-title-wrap">
+		<h1><a href="/" title="Go to the homepage">Anine&#39;s Blog</a></h1>
+	  <h2>
+            
+            
+              Post
+            
+          </h2>
+    </div>
+  </div>
+</div>
+
+<div id="main" role="main">
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+         
+		<span class="entry-date date published updated"><time datetime="2017-11-03 00:00:00 &#43;0000 UTC"><a href="/post/barplots/">Nov 3, 2017</a></time></span>
+        
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        Reading time ~2 minutes
+      </span>
+    </div>
+    
+	<h1 class="entry-title"><a href="/post/barplots/" rel="bookmark" title="Barplots" itemprop="url">Barplots</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <p>BARPLOTS LET’S GO!!</p>
+<p>Can you guess our first step? Yep, bringing those fiesty little packages into our library:</p>
+<pre class="r"><code>library(Lahman)
+library(sqldf)
+library(ggplot2)</code></pre>
+<p>First of all, we want to figure out what figure out what data we want to extract. Let’s say we want to look at team homerun totals in 1980.</p>
+<pre class="r"><code>query&lt;-&quot;SELECT name,HR 
+FROM Teams 
+WHERE yearID=1980 
+ORDER BY HR &quot;
+result&lt;-sqldf(query)
+
+
+result$name&lt;-factor(result$name,levels=result$name)</code></pre>
+<p>So, because we want to order it by homeruns, we have to add an extra line of coding to make sure that this translates correctly into ggplot. See that last line?</p>
+<p><strong>result<span class="math inline">\(name&lt;-factor(result\)</span>name,levels=result$name)</strong></p>
+<p>This is used to save the information as a facter, and organize that data in a specific manner. Ggplot defaults to ordering information in alphabetical order, and this last line counteracts that default.</p>
+<p>Now that we have the data, we want to apply it to a barplot. In this case, we are using <em>geom_bar</em> to achieve a barplot. Let’s take a look:</p>
+<pre class="r"><code>ggplot()+
+  geom_bar(data=result,aes(x=name,y=HR),stat=&#39;identity&#39;)+
+  coord_flip()+
+  ggtitle(&quot;1980 Team Homerun Totals&quot;)+
+  xlab(&quot;Team Name&quot;)+
+  ylab(&quot;Homeruns&quot;)</code></pre>
+<p><img src="/post/2017-11-03-barplots_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>A few things to note here:</p>
+<ol style="list-style-type: decimal">
+<li><p>We need to add the line <strong>stat=‘identity’</strong> to have all the information go through correctly</p></li>
+<li><p>We used <strong>coord_flip</strong> to switch the x-axis and y-axis around. To make this more understandable, let’s take a look at the barplot if we had not added <strong>coord_flip</strong> to the code:</p></li>
+</ol>
+<pre class="r"><code>ggplot()+
+  geom_bar(data=result,aes(x=name,y=HR),stat=&#39;identity&#39;)+
+  ggtitle(&quot;1980 Team Homerun Totals&quot;)+
+  xlab(&quot;Team Name&quot;)+
+  ylab(&quot;Homeruns&quot;)</code></pre>
+<p><img src="/post/2017-11-03-barplots_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>See what I mean?</p>
+<p>Alrighty! That wraps things up for barplots! Until next time.</p>
+
+  </div>
+</article>
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+         
+		<span class="entry-date date published updated"><time datetime="2017-11-03 00:00:00 &#43;0000 UTC"><a href="/post/histograms/">Nov 3, 2017</a></time></span>
+        
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        Reading time ~2 minutes
+      </span>
+    </div>
+    
+	<h1 class="entry-title"><a href="/post/histograms/" rel="bookmark" title="Histograms" itemprop="url">Histograms</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <p>Hey there! Glad you’re back.</p>
+<p>So far, we have covered Scatterplots and Time Series’. Now, we will be going over Histograms. Before we get started, you know the drill:</p>
+<pre class="r"><code>library(Lahman)
+library(sqldf)
+library(ggplot2)</code></pre>
+<p>To make it simple, let’s just look at the weight of the players and extract it from the Master table. The query should look like this:</p>
+<pre class="r"><code>query&lt;-&quot;SELECT weight FROM Master&quot;
+result&lt;-sqldf(query)</code></pre>
+<p>Now, let’s discuss how to go about histogramming it up. First off, we are pretty much doing the same old same old with ggplot, however, instead of using <em>geom_point</em> or <em>geom_line</em>, we are going to be using <em>geom_histogram</em> (woah, shocker!).</p>
+<pre class="r"><code>ggplot()+
+  geom_histogram(data=result,aes(x=weight),color=&quot;blue&quot;,fill=&quot;white&quot;,bins=60)+
+  ggtitle(&quot;Distribution of Baseball Player Bodyweight&quot;)+
+  xlab(&quot;Weight of player&quot;)+
+  ylab(&quot;Number of players&quot;)</code></pre>
+<p><img src="/post/2017-11-03-histograms_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>Alright, so you may have noticed a few diferences here.</p>
+<p>First and foremost, we changed the color of the bars. The <em>color</em> prompt decides the color of the outline, while <em>fill</em> is the inside of the bars (pretty easy).</p>
+<p>Second, we added <em>bins</em> and indicated that we want only <strong>60</strong> of them. This decides how many bars we have. So let’s take a look at the histogram if we hadn’t added the bins prompt:</p>
+<pre class="r"><code>ggplot()+
+  geom_histogram(data=result,aes(x=weight),color=&quot;blue&quot;,fill=&quot;white&quot;)+
+  ggtitle(&quot;Distribution of Baseball Player Bodyweight&quot;)+
+  xlab(&quot;Weight of player&quot;)+
+  ylab(&quot;Number of players&quot;)</code></pre>
+<p><img src="/post/2017-11-03-histograms_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>See the difference? Alright cool cool. So you can change the number of bins as well. Take a look for yourself! Create an RScript file and plop that sucker in, then play around with the number of bins shown.</p>
+<p>Next we will talk about barplots!</p>
+
+  </div>
+</article>
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+         
+		<span class="entry-date date published updated"><time datetime="2017-11-03 00:00:00 &#43;0000 UTC"><a href="/post/scatterplots/">Nov 3, 2017</a></time></span>
+        
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        Reading time ~3 minutes
+      </span>
+    </div>
+    
+	<h1 class="entry-title"><a href="/post/scatterplots/" rel="bookmark" title="Scatterplots" itemprop="url">Scatterplots</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <p>Let’s talk about data visualization! Specifically, Scatterplots.</p>
+<p>In this post, we will learn how to extract data from the Lahman package in RStudio and use the package called <strong>ggplot2</strong> to create a scatterplot out of this data.</p>
+<p>First, remember to install and bring the packages you need in with the library prompt.</p>
+<pre class="r"><code>library(Lahman)
+library(sqldf)
+library(ggplot2)</code></pre>
+<p>Next, we want to extract the data we want to put into our scatterplot. In this example, let’s look at the career homeruns and strikeouts, where the players had more than 400 homeruns.</p>
+<pre class="r"><code>query&lt;-&quot;SELECT playerID,sum(HR),sum(SO)
+FROM Batting 
+GROUP BY playerID
+HAVING sum(HR)&gt;400&quot;
+sqldf(query)</code></pre>
+<pre><code>##     playerID sum(HR) sum(SO)
+## 1  aaronha01     755    1383
+## 2  bagweje01     449    1558
+## 3  bankser01     512    1236
+## 4  beltrad01     445    1584
+## 5  beltrca01     421    1693
+## 6  bondsba01     762    1539
+## 7  cabremi01     446    1516
+## 8  cansejo01     462    1942
+## 9  dawsoan01     438    1509
+## 10 delgaca01     473    1745
+## 11  dunnad01     462    2379
+## 12 evansda01     414    1410
+## 13  foxxji01     534    1311
+## 14 gehrilo01     493     790
+## 15 giambja01     440    1572
+## 16 gonzaju03     434    1273
+## 17 griffke02     630    1779
+## 18 guerrvl01     449     985
+## 19 jacksre01     563    2597
+## 20 jonesan01     434    1748
+## 21 jonesch06     468    1409
+## 22 killeha01     573    1699
+## 23 kingmda01     442    1816
+## 24 konerpa01     439    1391
+## 25 mantlmi01     536    1710
+## 26 matheed01     512    1487
+## 27  mayswi01     660    1526
+## 28 mccovwi01     521    1550
+## 29 mcgrifr01     493    1882
+## 30 mcgwima01     583    1596
+## 31 murraed02     504    1516
+## 32 musiast01     475     696
+## 33 ortizda01     541    1750
+## 34   ottme01     511     896
+## 35 palmera01     569    1348
+## 36 piazzmi01     427    1113
+## 37 pujolal01     591    1053
+## 38 ramirma02     555    1813
+## 39 ripkeca01     431    1305
+## 40 robinfr02     586    1532
+## 41 rodrial01     696    2287
+## 42  ruthba01     714    1330
+## 43 schmimi01     548    1883
+## 44 sheffga01     509    1171
+## 45 snidedu01     407    1237
+## 46 soriaal01     412    1803
+## 47  sosasa01     609    2306
+## 48 stargwi01     475    1936
+## 49 teixema01     409    1441
+## 50 thomafr04     521    1397
+## 51 thomeji01     612    2548
+## 52 willibi01     426    1046
+## 53 willite01     521     709
+## 54 winfida01     465    1686
+## 55 yastrca01     452    1393</code></pre>
+<p>Now that we have our info, let’s go over a few things.</p>
+<p>First, ggplot cannot process sum, avg, max, or min prompts. Therefore, we have to save this information <em>AS</em> a different name (using the <em>AS</em> prompt, hehe). For example, instead of just writing <strong>sum(HR)</strong>, we will write it like this: <strong>sum(HR) AS CareerHR</strong>.</p>
+<p>Second, to make things easier on ourselves, we can save this information as <strong>“result”</strong>. We do this by putting <em>result&lt;-</em> in front of the sqldf prompt. Here’s what I mean:</p>
+<pre class="r"><code>query&lt;-&quot;SELECT playerID,sum(HR) AS CareerHR,sum(SO) AS CareerSO
+FROM Batting
+GROUP BY playerID
+HAVING sum(HR)&gt;400&quot;
+result&lt;-sqldf(query)</code></pre>
+<p>Alright! Now that we have our data, we can visualize it in a scatterplot using ggplot2. In this case, we want to put homeruns in the y-axis and strikeouts in the x-axis. We will also look at how to label the axes and give the plot a title. Take a look:</p>
+<pre class="r"><code>ggplot()+
+geom_point(data=result,aes(x=CareerSO,y=CareerHR),size=3)+
+ggtitle(&quot;Career Strikeouts and Homeruns - The Best&quot;)+
+xlab(&quot;Career Strikeouts&quot;)+
+ylab(&quot;Career Homeruns&quot;)</code></pre>
+<p><img src="/post/2017-11-03-scatterplots_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>Alright, that’s it for this post! See yah in the next, where we will talk about Time Series plots!</p>
+
+  </div>
+</article>
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+         
+		<span class="entry-date date published updated"><time datetime="2017-11-03 00:00:00 &#43;0000 UTC"><a href="/post/time-series/">Nov 3, 2017</a></time></span>
+        
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        Reading time ~2 minutes
+      </span>
+    </div>
+    
+	<h1 class="entry-title"><a href="/post/time-series/" rel="bookmark" title="Time Series" itemprop="url">Time Series</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <p>Hey guys! So last post we talked about Scatterplots. In this post we are going to talk about Time Series plots!</p>
+<p>Again, remember to bring in the necessary packages with library:</p>
+<pre class="r"><code>library(Lahman)
+library(sqldf)
+library(ggplot2)</code></pre>
+<p>Now that that’s done, lettuce jump into it!</p>
+<p>Say we want to see Babe Ruth’s homeruns over his twenty-two seasons. This is the query we want to put in: (remember, we want to save this in <strong>“result”</strong>)</p>
+<pre class="r"><code>query&lt;-&quot;SELECT yearID,HR FROM Batting WHERE playerID=&#39;ruthba01&#39;&quot;
+result&lt;-sqldf(query)</code></pre>
+<p>To put this information in a time series plot, we want to use the <em>geom_line</em> prompt. You can use <em>geom_point</em> as well, if you like. If not, you can either edit it out using <em>#</em> (to hide the prompt from being visualized), making the size of the points smaller (using the promt <em>size</em>), or just leaving it out of the query all together. Let me show you all three examples.</p>
+<p>Here it is with an altered size:</p>
+<pre class="r"><code>ggplot()+
+  geom_point(data=result,aes(x=yearID,y=HR),size=1)+
+  geom_line(data=result,aes(x=yearID,y=HR))+
+  ggtitle(&quot;Babe Ruth&#39;s Homeruns by Year&quot;)+
+  xlab(&quot;Year&quot;)+
+  ylab(&quot;Number of Homeruns&quot;)</code></pre>
+<p><img src="/post/2017-11-03-time-series_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>Using the <em>#</em> symbol to edit it out:</p>
+<pre class="r"><code>ggplot()+
+  #geom_point(data=result,aes(x=yearID,y=HR),size=1)+
+  geom_line(data=result,aes(x=yearID,y=HR))+
+  ggtitle(&quot;Babe Ruth&#39;s Homeruns by Year&quot;)+
+  xlab(&quot;Year&quot;)+
+  ylab(&quot;Number of Homeruns&quot;)</code></pre>
+<p><img src="/post/2017-11-03-time-series_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>Or just leaving it out all together:</p>
+<pre class="r"><code>ggplot()+
+  geom_line(data=result,aes(x=yearID,y=HR))+
+  ggtitle(&quot;Babe Ruth&#39;s Homeruns by Year&quot;)+
+  xlab(&quot;Year&quot;)+
+  ylab(&quot;Number of Homeruns&quot;)</code></pre>
+<p><img src="/post/2017-11-03-time-series_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>And there you have it! Next post, let’s go over Histograms. See yah then!</p>
+
+  </div>
+</article>
+
+
+
+
+
+</div>
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span> Powered by <a href="https://gohugo.io/" rel="nofollow">Hugo</a> using the <a href="https://github.com/dldx/hpstr-hugo-theme" rel="nofollow">HPSTR</a> theme.</span>
+
+  </footer>
+</div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="\/js\/vendor\/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/js/scripts.min.js"></script>
+
+
+
+</body>
+</html>
+

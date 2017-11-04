@@ -1,0 +1,66 @@
+---
+title: Barplots
+author: Anine
+date: '2017-11-03'
+slug: barplots
+categories: []
+tags: []
+---
+
+BARPLOTS LET'S GO!!
+
+Can you guess our first step? Yep, bringing those fiesty little packages into our library:
+
+```{r message=FALSE, warning=FALSE}
+library(Lahman)
+library(sqldf)
+library(ggplot2)
+```
+
+First of all, we want to figure out what figure out what data we want to extract. Let's say we want to look at team homerun totals in 1980.
+
+```{r}
+query<-"SELECT name,HR 
+FROM Teams 
+WHERE yearID=1980 
+ORDER BY HR "
+result<-sqldf(query)
+
+
+result$name<-factor(result$name,levels=result$name)
+```
+
+So, because we want to order it by homeruns, we have to add an extra line of coding to make sure that this translates correctly into ggplot. See that last line? 
+
+**result$name<-factor(result$name,levels=result$name)**
+
+This is used to save the information as a facter, and organize that data in a specific manner. Ggplot defaults to ordering information in alphabetical order, and this last line counteracts that default.
+
+Now that we have the data, we want to apply it to a barplot. In this case, we are using *geom_bar* to achieve a barplot. Let's take a look:
+
+```{r}
+ggplot()+
+  geom_bar(data=result,aes(x=name,y=HR),stat='identity')+
+  coord_flip()+
+  ggtitle("1980 Team Homerun Totals")+
+  xlab("Team Name")+
+  ylab("Homeruns")
+```
+
+A few things to note here:
+
+1) We need to add the line **stat='identity'** to have all the information go through correctly
+
+2) We used **coord_flip** to switch the x-axis and y-axis around. To make this more understandable, let's take a look at the barplot if we had not added **coord_flip** to the code:
+
+```{r}
+ggplot()+
+  geom_bar(data=result,aes(x=name,y=HR),stat='identity')+
+  ggtitle("1980 Team Homerun Totals")+
+  xlab("Team Name")+
+  ylab("Homeruns")
+```
+
+See what I mean? 
+
+Alrighty! That wraps things up for barplots! Until next time.

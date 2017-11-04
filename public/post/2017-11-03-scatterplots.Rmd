@@ -1,0 +1,56 @@
+---
+title: Scatterplots
+author: 'Anine'
+date: '2017-11-03'
+slug: scatterplots
+categories: []
+tags: []
+---
+
+Let's talk about data visualization! Specifically, Scatterplots.
+
+In this post, we will learn how to extract data from the Lahman package in RStudio and use the package called **ggplot2** to create a scatterplot out of this data.
+
+First, remember to install and bring the packages you need in with the library prompt.
+
+```{r message=FALSE, warning=FALSE}
+library(Lahman)
+library(sqldf)
+library(ggplot2)
+```
+
+Next, we want to extract the data we want to put into our scatterplot. In this example, let's look at the career homeruns and strikeouts, where the players had more than 400 homeruns.
+
+```{r}
+query<-"SELECT playerID,sum(HR),sum(SO)
+FROM Batting 
+GROUP BY playerID
+HAVING sum(HR)>400"
+sqldf(query)
+```
+
+Now that we have our info, let's go over a few things.
+
+First, ggplot cannot process sum, avg, max, or min prompts. Therefore, we have to save this information *AS* a different name (using the *AS* prompt, hehe). For example, instead of just writing **sum(HR)**, we will write it like this: **sum(HR) AS CareerHR**.
+
+Second, to make things easier on ourselves, we can save this information as **"result"**. We do this by putting *result<-* in front of the sqldf prompt. Here's what I mean:
+
+```{r}
+query<-"SELECT playerID,sum(HR) AS CareerHR,sum(SO) AS CareerSO
+FROM Batting
+GROUP BY playerID
+HAVING sum(HR)>400"
+result<-sqldf(query)
+```
+
+Alright! Now that we have our data, we can visualize it in a scatterplot using ggplot2. In this case, we want to put homeruns in the y-axis and strikeouts in the x-axis. We will also look at how to label the axes and give the plot a title. Take a look:
+
+```{r}
+ggplot()+
+geom_point(data=result,aes(x=CareerSO,y=CareerHR),size=3)+
+ggtitle("Career Strikeouts and Homeruns - The Best")+
+xlab("Career Strikeouts")+
+ylab("Career Homeruns")
+```
+
+Alright, that's it for this post! See yah in the next, where we will talk about Time Series plots! 

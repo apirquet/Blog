@@ -1,0 +1,63 @@
+---
+title: Time Series
+author: 'Anine'
+date: '2017-11-03'
+slug: time-series
+categories: []
+tags: []
+---
+
+Hey guys! So last post we talked about Scatterplots. In this post we are going to talk about Time Series plots!
+
+Again, remember to bring in the necessary packages with library:
+
+```{r message=FALSE, warning=FALSE}
+library(Lahman)
+library(sqldf)
+library(ggplot2)
+```
+
+Now that that's done, lettuce jump into it!
+
+Say we want to see Babe Ruth's homeruns over his twenty-two seasons. This is the query we want to put in: (remember, we want to save this in **"result"**)
+
+```{r}
+query<-"SELECT yearID,HR FROM Batting WHERE playerID='ruthba01'"
+result<-sqldf(query)
+```
+
+To put this information in a time series plot, we want to use the *geom_line* prompt. You can use *geom_point* as well, if you like. If not, you can either edit it out using *#* (to hide the prompt from being visualized), making the size of the points smaller (using the promt *size*), or just leaving it out of the query all together. Let me show you all three examples. 
+
+Here it is with an altered size:
+
+```{r}
+ggplot()+
+  geom_point(data=result,aes(x=yearID,y=HR),size=1)+
+  geom_line(data=result,aes(x=yearID,y=HR))+
+  ggtitle("Babe Ruth's Homeruns by Year")+
+  xlab("Year")+
+  ylab("Number of Homeruns")
+```
+
+Using the *#* symbol to edit it out:
+
+```{r}
+ggplot()+
+  #geom_point(data=result,aes(x=yearID,y=HR),size=1)+
+  geom_line(data=result,aes(x=yearID,y=HR))+
+  ggtitle("Babe Ruth's Homeruns by Year")+
+  xlab("Year")+
+  ylab("Number of Homeruns")
+```
+
+Or just leaving it out all together:
+
+```{r}
+ggplot()+
+  geom_line(data=result,aes(x=yearID,y=HR))+
+  ggtitle("Babe Ruth's Homeruns by Year")+
+  xlab("Year")+
+  ylab("Number of Homeruns")
+```
+
+And there you have it! Next post, let's go over Histograms. See yah then!

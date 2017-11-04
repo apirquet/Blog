@@ -1,0 +1,53 @@
+---
+title: Histograms
+author: Anine
+date: '2017-11-03'
+slug: histograms
+categories: []
+tags: []
+---
+
+Hey there! Glad you're back. 
+
+So far, we have covered Scatterplots and Time Series'. Now, we will be going over Histograms. Before we get started, you know the drill:
+
+```{r message=FALSE, warning=FALSE}
+library(Lahman)
+library(sqldf)
+library(ggplot2)
+```
+
+To make it simple, let's just look at the weight of the players and extract it from the Master table. The query should look like this:
+
+```{r}
+query<-"SELECT weight FROM Master"
+result<-sqldf(query)
+```
+
+Now, let's discuss how to go about histogramming it up. First off, we are pretty much doing the same old same old with ggplot, however, instead of using *geom_point* or *geom_line*, we are going to be using *geom_histogram* (woah, shocker!).
+
+```{r message=FALSE, warning=FALSE}
+ggplot()+
+  geom_histogram(data=result,aes(x=weight),color="blue",fill="white",bins=60)+
+  ggtitle("Distribution of Baseball Player Bodyweight")+
+  xlab("Weight of player")+
+  ylab("Number of players")
+```
+
+Alright, so you may have noticed a few diferences here. 
+
+First and foremost, we changed the color of the bars. The *color* prompt decides the color of the outline, while *fill* is the inside of the bars (pretty easy).
+
+Second, we added *bins* and indicated that we want only **60** of them. This decides how many bars we have. So let's take a look at the histogram if we hadn't added the bins prompt:
+
+```{r message=FALSE, warning=FALSE}
+ggplot()+
+  geom_histogram(data=result,aes(x=weight),color="blue",fill="white")+
+  ggtitle("Distribution of Baseball Player Bodyweight")+
+  xlab("Weight of player")+
+  ylab("Number of players")
+```
+
+See the difference? Alright cool cool. So you can change the number of bins as well. Take a look for yourself! Create an RScript file and plop that sucker in, then play around with the number of bins shown. 
+
+Next we will talk about barplots! 

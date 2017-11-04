@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Anine&#39;s Blog</title>
+    <link>/</link>
+    <description>Recent content on Anine&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-gb</language>
+    <lastBuildDate>Fri, 03 Nov 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Barplots</title>
+      <link>/post/barplots/</link>
+      <pubDate>Fri, 03 Nov 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/post/barplots/</guid>
+      <description>BARPLOTS LET’S GO!!
+Can you guess our first step? Yep, bringing those fiesty little packages into our library:
+library(Lahman)library(sqldf)library(ggplot2)First of all, we want to figure out what figure out what data we want to extract. Let’s say we want to look at team homerun totals in 1980.
+query&amp;lt;-&amp;quot;SELECT name,HR FROM Teams WHERE yearID=1980 ORDER BY HR &amp;quot;result&amp;lt;-sqldf(query)result$name&amp;lt;-factor(result$name,levels=result$name)So, because we want to order it by homeruns, we have to add an extra line of coding to make sure that this translates correctly into ggplot.</description>
+    </item>
+    
+    <item>
+      <title>Histograms</title>
+      <link>/post/histograms/</link>
+      <pubDate>Fri, 03 Nov 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/post/histograms/</guid>
+      <description>Hey there! Glad you’re back.
+So far, we have covered Scatterplots and Time Series’. Now, we will be going over Histograms. Before we get started, you know the drill:
+library(Lahman)library(sqldf)library(ggplot2)To make it simple, let’s just look at the weight of the players and extract it from the Master table. The query should look like this:
+query&amp;lt;-&amp;quot;SELECT weight FROM Master&amp;quot;result&amp;lt;-sqldf(query)Now, let’s discuss how to go about histogramming it up.</description>
+    </item>
+    
+    <item>
+      <title>Scatterplots</title>
+      <link>/post/scatterplots/</link>
+      <pubDate>Fri, 03 Nov 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/post/scatterplots/</guid>
+      <description>Let’s talk about data visualization! Specifically, Scatterplots.
+In this post, we will learn how to extract data from the Lahman package in RStudio and use the package called ggplot2 to create a scatterplot out of this data.
+First, remember to install and bring the packages you need in with the library prompt.
+library(Lahman)library(sqldf)library(ggplot2)Next, we want to extract the data we want to put into our scatterplot. In this example, let’s look at the career homeruns and strikeouts, where the players had more than 400 homeruns.</description>
+    </item>
+    
+    <item>
+      <title>Time Series</title>
+      <link>/post/time-series/</link>
+      <pubDate>Fri, 03 Nov 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/post/time-series/</guid>
+      <description>Hey guys! So last post we talked about Scatterplots. In this post we are going to talk about Time Series plots!
+Again, remember to bring in the necessary packages with library:
+library(Lahman)library(sqldf)library(ggplot2)Now that that’s done, lettuce jump into it!
+Say we want to see Babe Ruth’s homeruns over his twenty-two seasons. This is the query we want to put in: (remember, we want to save this in “result”)</description>
+    </item>
+    
+  </channel>
+</rss>
